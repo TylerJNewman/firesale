@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, dialog } = require("electron");
 
 // this prevents mainWindow from being garbage collected
 // toplevel scope remains alive until applications quits
@@ -9,7 +9,15 @@ app.on("ready", () => {
 
   mainWindow.loadFile(`${__dirname}/index.html`);
 
+  getFileFromUser();
+
   mainWindow.once("ready-to-show", () => mainWindow.show());
 });
 
-console.log("Starting up...");
+const getFileFromUser = () => {
+  const files = dialog.showOpenDialog({
+    properties: ["openFile"],
+  });
+
+  console.log(files);
+};
