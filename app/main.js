@@ -1,3 +1,5 @@
+const fs = require("fs");
+
 const { app, BrowserWindow, dialog } = require("electron");
 
 // this prevents mainWindow from being garbage collected
@@ -17,7 +19,19 @@ app.on("ready", () => {
 const getFileFromUser = () => {
   const files = dialog.showOpenDialog({
     properties: ["openFile"],
+    filters: [
+      { name: "Text Files", extensions: ["txt", "text"] },
+      {
+        name: "Markdown Files",
+        extensions: ["md", "mdown", "markdown", "marcdown"],
+      },
+    ],
   });
 
-  console.log(files);
+  if (!files) return;
+
+  const [file] = files;
+  const content = fs.readFileSync(file);
+
+  console.log(content);
 };
